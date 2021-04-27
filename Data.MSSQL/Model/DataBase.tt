@@ -1,0 +1,36 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ assembly name="System.Data" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="SqlSugar" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Web" #>
+
+<#@ assembly name="$(projectDir)Lib\Oracle.ManagedDataAccess.dll" #> 
+<#@ assembly name="$(projectDir)Lib\SqlSugar.dll" #> 
+<#@ assembly name="$(projectDir)Lib\Newtonsoft.Json.dll" #> 
+
+<# 
+     
+    //CTRL+S将会执行该文件的代码，自动作生实体
+
+    //当前项目目录
+    string projectDir = Host.ResolveAssemblyReference("$(ProjectDir)");
+
+    //解决方案目录
+    string solutionDir = Host.ResolveAssemblyReference("$(SolutionDir)");
+
+    //项目名称
+    string projectName = Host.ResolveAssemblyReference("$(ProjectName)");
+
+    var db = new SqlSugarClient(new ConnectionConfig() { ConnectionString =  "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.0.102)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORCL)));User Id=EQUIPMENT;Password=123456", DbType = DbType.Oracle, IsAutoCloseConnection = true });
+    db.DbFirst.CreateClassFile(projectDir + "Model\\Data\\","Data.MSSQL.Model.Data");
+    //db.DbFirst.Where(name=>name!="EQUIPMENT_SCORE").CreateClassFile(projectDir + "Model\\Data\\","Data.MSSQL.Model.Data");
+    
+#>
